@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Set
-//
-//  Created by Charles Costello on 1/20/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
