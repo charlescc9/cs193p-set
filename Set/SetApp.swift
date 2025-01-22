@@ -4,7 +4,7 @@ import SwiftUI
 struct SetApp: App {
     var body: some Scene {
         WindowGroup {
-            SetView(viewModel: SetViewModel())
+            SetView(viewModel: GameViewModel())
         }
     }
 }

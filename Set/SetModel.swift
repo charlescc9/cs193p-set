@@ -1,55 +1,57 @@
 import Foundation
 
-enum Number: CaseIterable {
-    case one
-    case two
-    case three
-}
-
-enum Symbol: CaseIterable {
+enum SetSymbol: CaseIterable {
     case circle
     case square
     case diamond
 }
 
-enum Color: CaseIterable {
+enum SetColor: CaseIterable {
     case red
     case green
     case blue
 }
 
-enum Shading: CaseIterable {
+enum SetShading: CaseIterable {
     case open
     case striped
     case solid
 }
 
-struct Card: CustomDebugStringConvertible {
-    let number: Number
-    let symbol: Symbol
-    let color: Color
-    let shading: Shading
+struct Card: Identifiable, CustomDebugStringConvertible {
+    var id: String
+
+    let number: Int
+    let symbol: SetSymbol
+    let color: SetColor
+    let shading: SetShading
 
     var isFaceUp = false
 
     var debugDescription: String { "\(number) -- \(symbol) -- \(color) -- \(shading)" }
 }
 
-struct Deck {
-    let cards: [Card]
+struct Game {
+    private(set) var deck: [Card]
+    private(set) var table: [Card]
 
     init() {
         var cards: [Card] = []
-        for number in Number.allCases {
-            for symbol in Symbol.allCases {
-                for color in Color.allCases {
-                    for shading in Shading.allCases {
+        for number in (1...3) {
+            for symbol in SetSymbol.allCases {
+                for color in SetColor.allCases {
+                    for shading in SetShading.allCases {
                         cards.append(
-                            Card(number: number, symbol: symbol, color: color, shading: shading))
+                            Card(
+                                id: "\(number)\(symbol)\(color)\(shading)", number: number,
+                                symbol: symbol, color: color, shading: shading))
                     }
                 }
             }
         }
-        self.cards = cards
+        cards.shuffle()
+
+        table = Array(cards.prefix(12))
+        deck = Array(cards.suffix(cards.count - 12))
     }
 }
