@@ -9,6 +9,9 @@ struct SetView: View {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 96))]) {
                     ForEach(viewModel.table) { card in
                         CardView(card: card, viewModel: viewModel)
+                            .onTapGesture {
+                                viewModel.selectCard(card)
+                            }
                     }
                 }
                 .padding()
@@ -32,20 +35,19 @@ struct SetView: View {
 
 struct CardView: View {
     private let radius: CGFloat = 4
-    
+
     let card: Card
     let viewModel: GameViewModel
 
     var body: some View {
         ZStack {
             let rect = RoundedRectangle(cornerRadius: radius)
-            rect.strokeBorder(lineWidth: 3)
-                .background(rect.fill(.white))
+            rect.strokeBorder(GameViewModel.SelectionDict[card.selection] ?? .black, lineWidth: 3)
                 .overlay {
                     VStack {
                         ForEach((1...card.number), id: \.self) { _ in
                             switch card.symbol {
-                            case .circle:
+                            case .oval:
                                 viewModel.applyColorAndShading(to: Capsule(), forCard: card)
                             case .rect:
                                 viewModel.applyColorAndShading(
@@ -59,9 +61,6 @@ struct CardView: View {
                     }
                 }
                 .aspectRatio(2.5 / 3.5, contentMode: .fit)
-                .opacity(card.isFaceUp ? 1 : 0)
-            rect.fill(.black)
-                .opacity(card.isFaceUp ? 0 : 1)
         }
     }
 }
@@ -74,7 +73,7 @@ struct Diamond: Shape {
         let right = CGPoint(x: rect.maxX, y: rect.midY)
         let bottom = CGPoint(x: rect.midX, y: rect.maxY)
         let left = CGPoint(x: rect.minX, y: rect.midY)
-        
+
         path.move(to: top)
         path.addLine(to: right)
         path.addLine(to: bottom)

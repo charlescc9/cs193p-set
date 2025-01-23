@@ -1,7 +1,7 @@
 import Foundation
 
 enum SetSymbol: CaseIterable {
-    case circle
+    case oval
     case rect
     case diamond
 }
@@ -18,17 +18,20 @@ enum SetShading: CaseIterable {
     case solid
 }
 
-struct Card: Identifiable, CustomDebugStringConvertible {
-    var id: String
+enum SetSelection {
+    case none
+    case selected
+    case matched
+    case notMatched
+}
 
+struct Card: Identifiable {
+    let id: String
     let number: Int
     let symbol: SetSymbol
     let color: SetColor
     let shading: SetShading
-
-    var isFaceUp = true
-
-    var debugDescription: String { "\(number) -- \(symbol) -- \(color) -- \(shading)" }
+    var selection = SetSelection.none
 }
 
 struct Game {
@@ -53,5 +56,11 @@ struct Game {
 
         table = Array(cards.prefix(12))
         deck = Array(cards.suffix(cards.count - 12))
+    }
+
+    mutating func selectCard(_ card: Card) {
+        if let i = table.firstIndex(where: { $0.id == card.id }) {
+            table[i].selection = SetSelection.selected
+        }
     }
 }
