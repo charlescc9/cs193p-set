@@ -2,7 +2,7 @@ import Foundation
 
 enum SetSymbol: CaseIterable {
     case circle
-    case square
+    case rect
     case diamond
 }
 
@@ -26,7 +26,7 @@ struct Card: Identifiable, CustomDebugStringConvertible {
     let color: SetColor
     let shading: SetShading
 
-    var isFaceUp = false
+    var isFaceUp = true
 
     var debugDescription: String { "\(number) -- \(symbol) -- \(color) -- \(shading)" }
 }
