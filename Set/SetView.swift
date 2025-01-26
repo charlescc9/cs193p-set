@@ -45,7 +45,7 @@ struct CardView: View {
             rect.strokeBorder(GameViewModel.SelectionDict[card.selection] ?? .black, lineWidth: 3)
                 .overlay {
                     VStack {
-                        ForEach((1...card.number), id: \.self) { _ in
+                        ForEach((1...card.number.rawValue), id: \.self) { _ in
                             switch card.symbol {
                             case .oval:
                                 viewModel.applyColorAndShading(to: Capsule(), forCard: card)
